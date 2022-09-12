@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.util.Calendar;
+import java.util.List;
 
 @Entity
 @Table(name = "empleados")
@@ -28,5 +29,8 @@ public class EmpleadoEntity {
     private double sueldoFijo;
     // Calcula los años de servicio
     private int aniosServicio;
+
+    @OneToMany(mappedBy = "empleado")
+    private List<MarcasRelojEntity> marcas;
 
 }

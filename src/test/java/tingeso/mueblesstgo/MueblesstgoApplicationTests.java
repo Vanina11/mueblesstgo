@@ -7,7 +7,9 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import org.springframework.boot.test.context.SpringBootTest;
 import tingeso.mueblesstgo.entities.EmpleadoEntity;
+import tingeso.mueblesstgo.entities.MarcasRelojEntity;
 import tingeso.mueblesstgo.services.EmpleadoService;
+import tingeso.mueblesstgo.services.MarcasRelojService;
 import tingeso.mueblesstgo.services.OficinaRRHHService;
 
 import static org.assertj.core.api.Assertions.*;
@@ -151,4 +153,17 @@ class OficinaRRHHTest{
 		assertEquals(17000, descuentoMinutos);
 	}
 }
-
+/*
+@SpringBootTest
+class MarcasRelojTest{
+	@Autowired
+	private MarcasRelojService marcasRelojService;
+	@Test
+	void marcasRelojTest(){
+		MarcasRelojEntity marcasReloj = new MarcasRelojEntity();
+		marcasReloj.setFecha(Calendar.getInstance().set(2022,08,23););
+		marcasReloj.setHora("08:00");
+		//marcasRelojService.save(marcasReloj);
+	}
+}
+*/
