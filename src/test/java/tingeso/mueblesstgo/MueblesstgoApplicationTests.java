@@ -33,16 +33,45 @@ class EmpleadoTest {
 	@Autowired
 	private EmpleadoService empleadoService;
 
-	EmpleadoEntity empleado = new EmpleadoEntity();
+
 
 	// Crea un empleado
 	@Test
 	void testEmpleado() {
-		empleado.setRut("12345678-9");
+		EmpleadoEntity empleado = new EmpleadoEntity();
+		empleado.setRut("12.345.678-9");
 		empleado.setNombres("Antonia");
 		empleado.setApellidos("Chávez");
 		empleado.setCategoria("A");
 		empleadoService.guardarEmpleado(empleado);
+
+		EmpleadoEntity empleado1 = new EmpleadoEntity();
+		empleado1.setRut("11.234.123-6");
+		empleado1.setNombres("Christopher");
+		empleado1.setApellidos("Chávez");
+		empleado1.setCategoria("A");
+		empleadoService.guardarEmpleado(empleado1);
+
+		EmpleadoEntity empleado2 = new EmpleadoEntity();
+		empleado2.setRut("12.457.562-3");
+		empleado2.setNombres("John");
+		empleado2.setApellidos("Chávez");
+		empleado2.setCategoria("A");
+		empleadoService.guardarEmpleado(empleado2);
+
+		EmpleadoEntity empleado3 = new EmpleadoEntity();
+		empleado3.setRut("21.142.354-k");
+		empleado3.setNombres("Xavier");
+		empleado3.setApellidos("Chávez");
+		empleado3.setCategoria("A");
+		empleadoService.guardarEmpleado(empleado3);
+
+		EmpleadoEntity empleado4 = new EmpleadoEntity();
+		empleado4.setRut("17.765.876-2");
+		empleado4.setNombres("Nícolas");
+		empleado4.setApellidos("Chávez");
+		empleado4.setCategoria("A");
+		empleadoService.guardarEmpleado(empleado4);
 	}
 
 	@Test

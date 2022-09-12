@@ -16,9 +16,11 @@
 <!-- Formulario para ingresar el archivo de las marcas de reloj -->
 <div class="container">
   <!-- Método post, enctype es para indicar el tipo de archivo -->
+
   <form th:action="@{/cargar}" method="post" enctype="multipart/form-data">
     <input type="file" class="form-control" name="archivos">
     <input type="submit" value="Carga">
+
   </form>
   <!--  -->
   <h3 th:text="${mensaje}"></h3>
