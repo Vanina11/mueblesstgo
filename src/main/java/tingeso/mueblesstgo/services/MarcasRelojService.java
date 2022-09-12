@@ -12,7 +12,7 @@ import org.springframework.web.multipart.MultipartFile;
 @Service
 public class MarcasRelojService {
     // Indica la ubicación del archivo de texto que contiene las marcas de reloj
-    private String directorio="mueblesStgo//cargas//";
+    private String directorio="mueblesstgo//cargas//";
     private final Logger logg = LoggerFactory.getLogger(MarcasRelojService.class);
 
     // Importa el archivo de marcas de reloj
