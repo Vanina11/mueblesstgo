@@ -34,4 +34,6 @@ public class EmpleadoEntity {
     private List<MarcasRelojEntity> marcas;
     @OneToMany(mappedBy = "empleado")
     private List<JustificativosEntity> justificativos;
+    @OneToOne(mappedBy = "empleado")
+    private HorasExtraEntity horasExtra;
 }
