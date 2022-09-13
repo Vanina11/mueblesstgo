@@ -9,22 +9,24 @@
           integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1"
           crossorigin="anonymous">
   <!-- Título ventana -->
-  <title>Ingresar justificativo por inasistencia</title>
+  <title>Justificativos</title>
 </head>
 <body>
-<h1>Ingresar justificativo</h1>
-<!-- Formulario para ingresar el archivo de las marcas de reloj -->
-<div class="container">
-  <!-- Método post, enctype es para indicar el tipo de archivo -->
-
+<br>
+<!-- Formulario para ingresar justificativos por inasistencia-->
+<div class="container p-3 my-3 bg-dark text-white">
+  <h1>Ingresar justificativo por inasistencia</h1>
+  <br>
   <form th:action="@{/justificativo}" method="post">
-    <input type="text" class="form-control" name="fecha">
-
-      <input type="text" class="form-control" name="rut">
-      <input type="submit" value="Carga">
-
+    <label for="fecha">Fecha de inasistencia:</label>
+    <input type="text" class="form-control" placeholder="Ingrese la fecha en el formato AAAA/MM/DD" id="fecha" name="fecha" required>
+    <br>
+    <label for="rut">Rut:</label>
+    <input type="text" class="form-control" id="rut" placeholder="Ingrese el rut del empleado XX.XXX.XXX-X" name="rut" required>
+    <br>
+    <input type="submit" class="btn btn-info" value="Enviar">
+    <a href="#" class="btn btn-secondary" role="button">Ir a Inicio</a>
   </form>
-  <!--  -->
   <h3 th:text="${mensaje}"></h3>
 </div>
 </body>

@@ -9,20 +9,21 @@
           integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1"
           crossorigin="anonymous">
   <!-- Título ventana -->
-  <title>Carga archivo marcas de reloj</title>
+  <title>Marcas de reloj</title>
 </head>
 <body>
-<h1>Carga de archivos</h1>
+<br>
 <!-- Formulario para ingresar el archivo de las marcas de reloj -->
-<div class="container">
+<div class="container p-3 my-3 bg-dark text-white">
+  <h1>Carga de archivo de marcas de reloj</h1>
+  <br>
   <!-- Método post, enctype es para indicar el tipo de archivo -->
-
   <form th:action="@{/cargar}" method="post" enctype="multipart/form-data">
-    <input type="file" class="form-control" name="archivos">
-    <input type="submit" value="Carga">
-
+    <input type="file" class="form-control" name="archivos" required>
+    <br>
+    <input type="submit" class="btn btn-info" value="Cargar">
+    <a href="#" class="btn btn-secondary" role="button">Ir a Inicio</a>
   </form>
-  <!--  -->
   <h3 th:text="${mensaje}"></h3>
 </div>
 </body>
