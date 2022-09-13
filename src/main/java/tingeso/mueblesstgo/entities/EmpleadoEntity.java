@@ -32,5 +32,6 @@ public class EmpleadoEntity {
 
     @OneToMany(mappedBy = "empleado")
     private List<MarcasRelojEntity> marcas;
-
+    @OneToMany(mappedBy = "empleado")
+    private List<JustificativosEntity> justificativos;
 }

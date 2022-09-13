@@ -5,7 +5,6 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.Calendar;
 import java.util.Objects;
 
 import org.slf4j.Logger;
@@ -75,19 +74,9 @@ public class MarcasRelojService {
         // Si el empleado existe, se crea la marca de reloj
         EmpleadoEntity empleado = empleadoRepository.findByRut(rut);
         MarcasRelojEntity marcas = marcasRelojRepository.findByFechaAndEmpleado(fecha, empleado);
-        if(verificaEmpleado(rut) && marcas == null){
+        if(empleadoRepository.findByRut(rut) != null && marcas == null){
             crearMarcaReloj(fecha, hora, rut);
-            // ..........
         }
-    }
-
-    // Descripción: Verifica que existe el empleado en la base de datos
-    // Entrada: String para el rut del empleado
-    // Salida: Booleano
-    private boolean verificaEmpleado(String rut){
-        EmpleadoEntity empleado = empleadoRepository.findByRut(rut);
-        System.out.println("VERIFICA EMPLEADO:" + empleado.getNombres());
-        return empleado != null;
     }
 
     // Descripción: Crea la marca de reloj
@@ -95,7 +84,6 @@ public class MarcasRelojService {
     // Salida: void
     private void crearMarcaReloj(String fecha, String hora, String rut) {
         EmpleadoEntity empleado = empleadoRepository.findByRut(rut);
-        System.out.println("CREAR MARCA RELOJ:" + empleado.getNombres());
         MarcasRelojEntity marcaReloj = new MarcasRelojEntity();
         marcaReloj.setFecha(fecha);
         marcaReloj.setHora(hora);
