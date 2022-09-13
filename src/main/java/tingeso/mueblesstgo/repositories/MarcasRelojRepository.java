@@ -10,7 +10,8 @@ import tingeso.mueblesstgo.entities.MarcasRelojEntity;
 
 @Repository
 public interface MarcasRelojRepository extends JpaRepository<MarcasRelojEntity, Long> {
-    //MarcasRelojEntity findByRut(String rut);
-    //public MarcasRelojEntity findByEmpleado(String rut);
+
+    MarcasRelojEntity findByFechaAndEmpleado(String fecha, EmpleadoEntity empleado);
+
 
 }

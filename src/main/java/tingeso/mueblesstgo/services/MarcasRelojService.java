@@ -69,26 +69,16 @@ public class MarcasRelojService {
     private void leerLinea(String linea){
         // Separa la línea por ;
         String[] datos = linea.split(";");
-        Calendar fecha = fechaIngreso(datos[0]);
+        String fecha = datos[0];
         String hora = datos[1];
         String rut = datos[2];
         // Si el empleado existe, se crea la marca de reloj
-        //MarcasRelojEntity marcas = marcasRelojRepository.findByRut(rut);
-        //System.out.println(marcas.getId());
-        if(verificaEmpleado(rut)) {
+        EmpleadoEntity empleado = empleadoRepository.findByRut(rut);
+        MarcasRelojEntity marcas = marcasRelojRepository.findByFechaAndEmpleado(fecha, empleado);
+        if(verificaEmpleado(rut) && marcas == null){
             crearMarcaReloj(fecha, hora, rut);
             // ..........
         }
-    }
-
-    // Descripción: Crea la fecha según el string de la línea del archivo
-    // Entrada: String con la fecha
-    // Salida: Calendar con la fecha
-    private Calendar fechaIngreso(String fechaS){
-        String fecha[] = fechaS.split("/");
-        Calendar fechaI = Calendar.getInstance();
-        fechaI.set(Integer.parseInt(fecha[0]), Integer.parseInt(fecha[1]), Integer.parseInt(fecha[2]));
-        return fechaI;
     }
 
     // Descripción: Verifica que existe el empleado en la base de datos
@@ -100,11 +90,10 @@ public class MarcasRelojService {
         return empleado != null;
     }
 
-
     // Descripción: Crea la marca de reloj
     // Entrada: Calendar con la fecha, String con la hora y String con el rut del empleado
     // Salida: void
-    private void crearMarcaReloj(Calendar fecha, String hora, String rut) {
+    private void crearMarcaReloj(String fecha, String hora, String rut) {
         EmpleadoEntity empleado = empleadoRepository.findByRut(rut);
         System.out.println("CREAR MARCA RELOJ:" + empleado.getNombres());
         MarcasRelojEntity marcaReloj = new MarcasRelojEntity();

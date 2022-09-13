@@ -5,7 +5,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import java.util.Calendar;
 
 @Entity
 @Table(name = "marcas")
@@ -18,7 +17,7 @@ public class MarcasRelojEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(unique = true, nullable = false)
     private Long id;
-    private Calendar fecha;
+    private String fecha;
     private String hora;
     @ManyToOne
     @JoinColumn(name = "id_empleado")
