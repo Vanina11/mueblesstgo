@@ -23,17 +23,16 @@ public class EmpleadoEntity {
     private String rut;
     private String nombres;
     private String apellidos;
+    private String fechaNacimiento;
     private String categoria;
-    private Calendar fechaIngreso;
-    // Calcula el suelo fijo correspondiente según la categoría
-    private double sueldoFijo;
-    // Calcula los años de servicio
-    private int aniosServicio;
+    private String fechaIngreso;
 
     @OneToMany(mappedBy = "empleado")
     private List<MarcasRelojEntity> marcas;
     @OneToMany(mappedBy = "empleado")
     private List<JustificativosEntity> justificativos;
-    @OneToOne(mappedBy = "empleado")
-    private HorasExtraEntity horasExtra;
+    @OneToMany(mappedBy = "empleado")
+    private List<HorasExtraEntity> horasExtra;
+    @OneToMany(mappedBy = "empleado")
+    private List<SueldosEntity> sueldos;
 }

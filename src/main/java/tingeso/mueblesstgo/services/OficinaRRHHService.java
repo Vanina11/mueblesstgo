@@ -7,6 +7,12 @@ import java.util.Calendar;
 
 @Service
 public class OficinaRRHHService {
+
+    public void calcularSueldos(){
+
+    }
+
+/*
     public void asignarSueldoFijo(EmpleadoEntity empleado){
         switch (empleado.getCategoria()) {
             case "A" -> empleado.setSueldoFijo(1700000);
@@ -14,6 +20,7 @@ public class OficinaRRHHService {
             case "C" -> empleado.setSueldoFijo(800000);
         }
     }
+
 
     public void calcularAniosServicio(EmpleadoEntity empleado){
         int anioIngreso = empleado.getFechaIngreso().get(Calendar.YEAR);
@@ -60,5 +67,5 @@ public class OficinaRRHHService {
             return 0.15 * empleado.getSueldoFijo();
         }
     }
-
+*/
 }

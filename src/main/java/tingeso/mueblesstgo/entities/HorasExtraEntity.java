@@ -17,8 +17,9 @@ public class HorasExtraEntity {
     @Column(unique = true, nullable = false)
     private Long id;
     private Integer horas;
-    private String fecha;
-    @OneToOne
+    private String mes;
+    @ManyToOne
     @JoinColumn(name = "id_empleado")
     private EmpleadoEntity empleado;
+
 }

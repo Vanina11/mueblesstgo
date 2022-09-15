@@ -19,6 +19,7 @@ public class MarcasRelojEntity {
     private Long id;
     private String fecha;
     private String hora;
+    private String horaSalida;
     @ManyToOne
     @JoinColumn(name = "id_empleado")
     private EmpleadoEntity empleado;

@@ -27,13 +27,5 @@ public class EmpleadoService {
         return empleadoRepository.findByRut(rut);
     }
 
-    public boolean eliminarEmpleado(Long id) {
-        try{
-            empleadoRepository.deleteById(id);
-            return true;
-        }catch(Exception err){
-            return false;
-        }
-    }
 
 }

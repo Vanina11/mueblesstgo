@@ -7,5 +7,5 @@ import tingeso.mueblesstgo.entities.HorasExtraEntity;
 
 @Repository
 public interface HorasExtraRepository extends JpaRepository<HorasExtraEntity, Long> {
-    HorasExtraEntity findByEmpleado(EmpleadoEntity empleado);
+    HorasExtraEntity findByEmpleadoAndMes(EmpleadoEntity empleado, String mes);
 }

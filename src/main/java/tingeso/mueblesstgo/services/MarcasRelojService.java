@@ -77,15 +77,19 @@ public class MarcasRelojService {
         // Si el empleado existe, se crea la marca de reloj
         EmpleadoEntity empleado = empleadoRepository.findByRut(rut);
         MarcasRelojEntity marcas = marcasRelojRepository.findByFechaAndEmpleado(fecha, empleado);
-        if(empleado != null && marcas == null){
-            crearMarcaReloj(fecha, hora, rut);
+        if(empleado != null){
+            if(marcas == null) {
+                crearMarcaReloj(fecha, hora, rut);
+            } else {
+                marcas.setHoraSalida(hora);
+            }
         }
     }
 
     // Descripción: Crea la marca de reloj
     // Entrada: Calendar con la fecha, String con la hora y String con el rut del empleado
     // Salida: void
-    private void crearMarcaReloj(String fecha, String hora, String rut) {
+    public void crearMarcaReloj(String fecha, String hora, String rut) {
         EmpleadoEntity empleado = empleadoRepository.findByRut(rut);
         MarcasRelojEntity marcaReloj = new MarcasRelojEntity();
         marcaReloj.setFecha(fecha);

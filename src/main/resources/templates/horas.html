@@ -1,61 +1,64 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" lang="">
 <head>
-  <meta charset="UTF-8">
-  <!-- Bootstrap CSS -->
-  <link
-          href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css"
-          rel="stylesheet"
-          integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1"
-          crossorigin="anonymous">
-  <!-- Título ventana -->
-  <title>Horas extra</title>
+    <meta charset="UTF-8">
+    <!-- Bootstrap CSS -->
+    <link
+            href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css"
+            rel="stylesheet"
+            integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1"
+            crossorigin="anonymous">
+    <!-- Título ventana -->
+    <title>Horas extra</title>
 </head>
 <body>
 <br>
 <!-- Formulario para ingresar horas extra -->
 <div class="container p-3 my-3 bg-dark text-white">
-  <h1>Ingresar autorización horas extras</h1>
-  <br>
-  <form th:action="@{/horas}" method="post">
-    <label for="rut">Rut:</label>
-    <input type="text" class="form-control" id="rut" placeholder="Ingrese el rut del empleado XX.XXX.XXX-X" name="rut" required>
-    <v-if th:if="${validarRut == false}">
-      <div class="alert alert-danger" role="alert">
-        Ingrese un rut válido.
-      </div>
-    </v-if>
+    <h1>Ingresar autorización horas extras</h1>
     <br>
-    <label for="fecha">Fecha de inasistencia:</label>
-    <input type="text" class="form-control" placeholder="Ingrese la fecha en el formato AAAA/MM/DD" id="fecha" name="fecha" required>
-    <v-if th:if="${validarFecha == false}">
-      <div class="alert alert-danger" role="alert">
-        Ingrese una fecha válida.
-      </div>
-    </v-if>
+    <form th:action="@{/horas}" method="post">
+        <label for="rut">Rut:</label>
+        <input type="text" class="form-control" id="rut" placeholder="Ingrese el rut del empleado XX.XXX.XXX-X"
+               name="rut" required>
+        <v-if th:if="${validarRut == false}">
+            <div class="alert alert-danger" role="alert">
+                Ingrese un rut válido.
+            </div>
+        </v-if>
+        <br>
+        <label for="fecha">Fecha:</label>
+        <input type="text" class="form-control" placeholder="Ingrese la fecha en el formato AAAA/MM/DD" id="fecha"
+               name="fecha" required>
+        <v-if th:if="${validarFecha == false}">
+            <div class="alert alert-danger" role="alert">
+                Ingrese una fecha válida.
+            </div>
+        </v-if>
+        <br>
+        <label for="horas">Cantidad de horas:</label>
+        <input type="text" class="form-control" id="horas" placeholder="Ingrese la cantidad de horas extras"
+               name="horas" required>
+        <v-if th:if="${validarHoras == false}">
+            <div class="alert alert-danger" role="alert">
+                Ingrese una cantidad de horas válida.
+            </div>
+        </v-if>
+        <br>
+        <input type="submit" class="btn btn-info" value="Enviar">
+        <a href="/" class="btn btn-secondary" role="button">Ir a Inicio</a>
+    </form>
     <br>
-    <label for="horas">Cantidad de horas:</label>
-    <input type="text" class="form-control" id="horas" placeholder="Ingrese la cantidad de horas extras" name="horas" required>
-    <v-if th:if="${validarHoras == false}">
-      <div class="alert alert-danger" role="alert">
-        Ingrese una cantidad de horas válida.
-      </div>
+    <v-if th:if="${mensaje == true}">
+        <div class="alert alert-success" role="alert">
+            Se ha ingresado la autorización de horas extras correctamente.
+        </div>
     </v-if>
-    <br>
-    <input type="submit" class="btn btn-info" value="Enviar">
-    <a href="/" class="btn btn-secondary" role="button">Ir a Inicio</a>
-  </form>
-  <br>
-  <v-if th:if="${mensaje == true}">
-    <div class="alert alert-success" role="alert">
-      Se ha ingresado la autorización de horas extras correctamente.
-    </div>
-  </v-if>
-  <v-else th:if="${mensaje == false}">
-    <div class="alert alert-danger" role="alert">
-      No se ha podido ingresar la autorización de horas extras.
-    </div>
-  </v-else>
+    <v-else th:if="${mensaje == false}">
+        <div class="alert alert-danger" role="alert">
+            No se ha podido ingresar la autorización de horas extras.
+        </div>
+    </v-else>
 </div>
 </body>
 </html>
