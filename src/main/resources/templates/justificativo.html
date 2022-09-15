@@ -18,16 +18,36 @@
   <h1>Ingresar justificativo por inasistencia</h1>
   <br>
   <form th:action="@{/justificativo}" method="post">
-    <label for="fecha">Fecha de inasistencia:</label>
-    <input type="text" class="form-control" placeholder="Ingrese la fecha en el formato AAAA/MM/DD" id="fecha" name="fecha" required>
-    <br>
     <label for="rut">Rut:</label>
     <input type="text" class="form-control" id="rut" placeholder="Ingrese el rut del empleado XX.XXX.XXX-X" name="rut" required>
+    <v-if th:if="${validarRut == false}">
+      <div class="alert alert-danger" role="alert">
+        Ingrese un rut válido.
+      </div>
+    </v-if>
+    <br>
+    <label for="fecha">Fecha de inasistencia:</label>
+    <input type="text" class="form-control" placeholder="Ingrese la fecha en el formato AAAA/MM/DD" id="fecha" name="fecha" required>
+    <v-if th:if="${validarFecha == false}">
+      <div class="alert alert-danger" role="alert">
+        Ingrese una fecha válida.
+      </div>
+    </v-if>
     <br>
     <input type="submit" class="btn btn-info" value="Enviar">
-    <a href="#" class="btn btn-secondary" role="button">Ir a Inicio</a>
+    <a href="/" class="btn btn-secondary" role="button">Ir a Inicio</a>
   </form>
-  <h3 th:text="${mensaje}"></h3>
+  <br>
+  <v-if th:if="${mensaje == true}">
+    <div class="alert alert-success" role="alert">
+      Se ha ingresado el justificativo correctamente.
+    </div>
+  </v-if>
+  <v-else th:if="${mensaje == false}">
+    <div class="alert alert-danger" role="alert">
+      No se ha podido ingresar el justificativo.
+    </div>
+  </v-else>
 </div>
 </body>
 </html>

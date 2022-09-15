@@ -32,18 +32,21 @@ public class MarcasRelojService {
     // Descripción: Permite importar el archivo de marcas de reloj, para esto verifica que no esté vacío y que la extensiòn sea .txt
     // Entrada: Archivo de texto con las marcas de reloj
     // Salida: void
-    public void guardarMarcasReloj(MultipartFile file) {
+    public boolean guardarMarcasReloj(MultipartFile file) {
         if (!file.isEmpty() && Objects.requireNonNull(file.getOriginalFilename()).endsWith(".txt")) {
             try {
                 byte [] bytes= file.getBytes();
                 Path path = Paths.get( directorio + file.getOriginalFilename() );
                 Files.write(path, bytes);
-                logg.info("Archivo guardado");
                 leerMarcasReloj(path);
+                return true;
 
             } catch (IOException e) {
                 e.printStackTrace();
+                return false;
             }
+        }else{
+            return false;
         }
     }
 
@@ -74,7 +77,7 @@ public class MarcasRelojService {
         // Si el empleado existe, se crea la marca de reloj
         EmpleadoEntity empleado = empleadoRepository.findByRut(rut);
         MarcasRelojEntity marcas = marcasRelojRepository.findByFechaAndEmpleado(fecha, empleado);
-        if(empleadoRepository.findByRut(rut) != null && marcas == null){
+        if(empleado != null && marcas == null){
             crearMarcaReloj(fecha, hora, rut);
         }
     }

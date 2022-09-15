@@ -22,9 +22,14 @@
     <input type="file" class="form-control" name="archivos" required>
     <br>
     <input type="submit" class="btn btn-info" value="Cargar">
-    <a href="#" class="btn btn-secondary" role="button">Ir a Inicio</a>
+    <a href="/" class="btn btn-secondary" role="button">Ir a Inicio</a>
   </form>
-  <h3 th:text="${mensaje}"></h3>
+  <br>
+  <v-if th:if="${mensaje == true}">
+    <div class="alert alert-success" role="alert">
+      Se ha ingresado el archivo de las marcas de reloj correctamente.
+    </div>
+  </v-if>
 </div>
 </body>
 </html>

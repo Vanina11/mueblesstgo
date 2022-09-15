@@ -1,34 +1,27 @@
-<!DOCTYPE HTML>
-<html xmlns:th="http://www.thymeleaf.org">
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" lang="">
 <head>
-    <title>My Web App</title>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor" crossorigin="anonymous">
+    <meta charset="UTF-8">
+    <!-- Bootstrap CSS -->
+    <link
+            href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css"
+            rel="stylesheet"
+            integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1"
+            crossorigin="anonymous">
+    <!-- Título ventana -->
+    <title>Muebles Stgo</title>
 </head>
 <body>
-<div class="container-sm">
-    <table class="table">
-        <thead class="thead-dark">
-        <tr>
-            <th>ID</th>
-            <th>Rut</th>
-            <th>Nombres</th>
-            <th>Categoria</th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr th:each="empleado:${empleados}">
-            <td th:text="${empleado.id}"></td>
-            <td th:text="${empleado.rut}"></td>
-            <td th:text="${empleado.nombres}"></td>
-            <td th:text="${empleado.categoria}"></td>
-            <td>
-                <a class="btn btn-primary" href="#" role="button">Editar</a>
-                <a class="btn btn-danger" href="#" role="button">Eliminar</a>
-            </td>
-        </tr>
-        </tbody>
-    </table>
+<br>
+<div class="container p-3 my-3 bg-dark text-white">
+    <h1>Muebles Stgo</h1>
+    <h2>Opciones:</h2>
+    <br>
+    <a href="/ingresar-marcas" class="btn btn-secondary" role="button" >Cargar marcas de reloj</a>
+    <a href="/ingresar-justificativo" class="btn btn-secondary" role="button" >Ingresar justificativo</a>
+    <a href="/ingresar-horas" class="btn btn-secondary" role="button" >Ingresar autorización</a>
+    <a href="/ingresar-justificativo" class="btn btn-secondary" role="button" >Calcular sueldos</a>
+    <a href="/ingresar-justificativo" class="btn btn-secondary" role="button" >Mostrar plantilla sueldos</a>
 </div>
 </body>
 </html>

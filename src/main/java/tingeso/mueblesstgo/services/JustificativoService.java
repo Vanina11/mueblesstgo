@@ -13,11 +13,21 @@ public class JustificativoService {
     EmpleadoRepository empleadoRepository;
     @Autowired
     JustificativoRepository justificativoRepository;
-    public void guardarJustificativo(String fecha, String rut) {
-        JustificativosEntity justificativo = new JustificativosEntity();
-        justificativo.setFecha(fecha);
-        EmpleadoEntity empleado = empleadoRepository.findByRut(rut);
-        justificativo.setEmpleado(empleado);
-        justificativoRepository.save(justificativo);
+    @Autowired
+    ValidadorService validadorService;
+    public boolean guardarJustificativo(String fecha, String rut) {
+        // Verifica que el rut exista en la base de datos y que la fecha sea válida
+        if (validadorService.validarRut(rut) && validadorService.validarFecha(fecha)) {
+            JustificativosEntity justificativo = new JustificativosEntity();
+            justificativo.setFecha(fecha);
+            EmpleadoEntity empleado = empleadoRepository.findByRut(rut);
+            justificativo.setEmpleado(empleado);
+            justificativoRepository.save(justificativo);
+            return true;
+        } else {
+            return false;
+        }
     }
+
+
 }
