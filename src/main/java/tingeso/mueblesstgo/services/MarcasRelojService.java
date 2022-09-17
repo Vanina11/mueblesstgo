@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.Objects;
 
 import org.slf4j.Logger;
@@ -25,6 +26,8 @@ public class MarcasRelojService {
 
     @Autowired
     EmpleadoRepository empleadoRepository;
+    @Autowired
+    EmpleadoService empleadoService;
     @Autowired
     MarcasRelojRepository marcasRelojRepository;
 
@@ -82,6 +85,7 @@ public class MarcasRelojService {
                 crearMarcaReloj(fecha, hora, rut);
             } else {
                 marcas.setHoraSalida(hora);
+                marcasRelojRepository.save(marcas);
             }
         }
     }
@@ -91,10 +95,46 @@ public class MarcasRelojService {
     // Salida: void
     public void crearMarcaReloj(String fecha, String hora, String rut) {
         EmpleadoEntity empleado = empleadoRepository.findByRut(rut);
+        Integer descuento = calcularDescuentoAtraso(hora);
         MarcasRelojEntity marcaReloj = new MarcasRelojEntity();
         marcaReloj.setFecha(fecha);
         marcaReloj.setHora(hora);
         marcaReloj.setEmpleado(empleado);
+        if(descuento != 15){
+            empleadoService.incrementaDescuentoAtraso(empleado, descuento);
+        }else {
+            empleadoService.incrementaInasistencias(empleado);
+        }
         marcasRelojRepository.save(marcaReloj);
+    }
+
+    private Integer calcularDescuentoAtraso(String hora) {
+        String[] horaMinuto = hora.split(":");
+        Integer horaInt = Integer.parseInt(horaMinuto[0]);
+        Integer minutoInt = Integer.parseInt(horaMinuto[1]);
+        if(horaInt <= 8 && minutoInt <= 10){
+            return 0;
+        } else {
+            Integer minutosAtraso = (horaInt - 8) * 60 + minutoInt - 10;
+            return montoDescuentoAtrasos(minutosAtraso);
+        }
+    }
+    private Integer montoDescuentoAtrasos(Integer minutos){
+        if(10 < minutos && minutos <= 25){
+            return 1;
+        } else if(25 < minutos && minutos <= 45){
+            return 3;
+        } else if(45 < minutos && minutos <= 70){
+            return 6;
+        } else {
+            return 15;
+        }
+    }
+    private boolean determinarInasistencia(Integer minutosAtraso){
+        return minutosAtraso > 70;
+    }
+
+    public ArrayList<MarcasRelojEntity> obtenerMarcasRelojPorEmpleado(EmpleadoEntity empleado){
+        return marcasRelojRepository.findByRut(empleado.getRut());
     }
 }

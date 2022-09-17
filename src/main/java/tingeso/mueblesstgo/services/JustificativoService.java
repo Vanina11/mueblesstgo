@@ -7,6 +7,8 @@ import tingeso.mueblesstgo.entities.JustificativosEntity;
 import tingeso.mueblesstgo.repositories.EmpleadoRepository;
 import tingeso.mueblesstgo.repositories.JustificativoRepository;
 
+import java.util.ArrayList;
+
 @Service
 public class JustificativoService {
     @Autowired
@@ -27,6 +29,10 @@ public class JustificativoService {
         } else {
             return false;
         }
+    }
+
+    public ArrayList<JustificativosEntity> obtenerJustificativosPorRut(EmpleadoEntity empleado){
+        return justificativoRepository.findByRut(empleado.getRut());
     }
 
 

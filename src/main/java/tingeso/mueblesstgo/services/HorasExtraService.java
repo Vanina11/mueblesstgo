@@ -4,10 +4,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import tingeso.mueblesstgo.entities.EmpleadoEntity;
 import tingeso.mueblesstgo.entities.HorasExtraEntity;
+import tingeso.mueblesstgo.entities.JustificativosEntity;
 import tingeso.mueblesstgo.entities.MarcasRelojEntity;
 import tingeso.mueblesstgo.repositories.EmpleadoRepository;
 import tingeso.mueblesstgo.repositories.HorasExtraRepository;
 import tingeso.mueblesstgo.repositories.MarcasRelojRepository;
+
+import java.util.ArrayList;
 
 @Service
 public class HorasExtraService {
@@ -56,5 +59,9 @@ public class HorasExtraService {
         horasExtra.setHoras(horas);
         horasExtra.setEmpleado(empleado);
         horasExtraRepository.save(horasExtra);
+    }
+
+    public ArrayList<HorasExtraEntity> obtenerHorasExtraPorRut(EmpleadoEntity empleado){
+        return horasExtraRepository.findByRut(empleado.getRut());
     }
 }

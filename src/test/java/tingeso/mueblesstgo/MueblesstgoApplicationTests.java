@@ -1,6 +1,7 @@
 package tingeso.mueblesstgo;
 
 
+import org.checkerframework.checker.units.qual.A;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -18,6 +19,8 @@ import tingeso.mueblesstgo.services.MarcasRelojService;
 import tingeso.mueblesstgo.services.JustificativoService;
 import tingeso.mueblesstgo.services.OficinaRRHHService;
 
+import java.util.ArrayList;
+
 import static org.assertj.core.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -29,7 +32,15 @@ class MueblesstgoApplicationTests {
 	}
 
 }
-
+@SpringBootTest
+class SueldosTest{
+	@Autowired
+	OficinaRRHHService oficinaRRHHService;
+	@Test
+	void calcularSueldosTest(){
+		oficinaRRHHService.calcularSueldos();
+	}
+}
 @SpringBootTest
 class EmpleadoTest {
 	@Autowired
@@ -95,6 +106,18 @@ class EmpleadoTest {
 		EmpleadoEntity empleadoRut = empleadoRepository.findByRut(empleado.getRut());
 		assertEquals(empleadoRut.getRut(), empleado.getRut());
 	}
+
+	@Test
+	public void obtenerEmpleadosTest(){
+		ArrayList<EmpleadoEntity> empleados = empleadoService.obtenerEmpleados();
+		for(int i = 0; i < empleados.size(); i++){
+			System.out.println("RUT: " + empleados.get(i).getRut());
+			System.out.println("Nombres: " + empleados.get(i).getNombres());
+			System.out.println("Apellidos: " + empleados.get(i).getApellidos());
+			System.out.println("-----------------------");
+		}
+		assertThat(empleados).isNotNull();
+	}
 }
 
 @SpringBootTest
@@ -108,7 +131,7 @@ class MarcasRelojTest{
 	@Test
 	void marcasRelojTest(){
 		MarcasRelojEntity marcasReloj = new MarcasRelojEntity();
-		marcasReloj.setFecha("2022/09/10");
+		marcasReloj.setFecha("2022/08/10");
 		marcasReloj.setHora("08:00");
 		marcasReloj.setHoraSalida("18:00");
 		marcasReloj.setEmpleado(empleadoRepository.findByRut("17.765.876-2"));
@@ -117,14 +140,14 @@ class MarcasRelojTest{
 
 	@Test
 	void marcasRelojTest2(){
-		marcasRelojService.crearMarcaReloj("2022/09/11", "08:30", "17.765.876-2");
+		marcasRelojService.crearMarcaReloj("2022/08/11", "08:30", "17.765.876-2");
 	}
 
 	@Test
 	void encontrarFechaYEmpleado(){
-		marcasRelojService.crearMarcaReloj("2022/09/07", "08:10", "21.142.354-k");
-		MarcasRelojEntity marcasReloj = marcasRelojRepository.findByFechaAndEmpleado("2022/09/07", empleadoRepository.findByRut("21.142.354-k"));
-		assertEquals(marcasReloj.getFecha(), "2022/09/07");
+		marcasRelojService.crearMarcaReloj("2022/08/07", "08:10", "21.142.354-k");
+		MarcasRelojEntity marcasReloj = marcasRelojRepository.findByFechaAndEmpleado("2022/08/07", empleadoRepository.findByRut("21.142.354-k"));
+		assertEquals(marcasReloj.getFecha(), "2022/08/07");
 		assertEquals(marcasReloj.getEmpleado().getRut(), "21.142.354-k");
 	}
 }
@@ -143,36 +166,27 @@ class HorasExtraTest {
 	@Test
 	void horasExtraTest() {
 		MarcasRelojEntity marcasReloj = new MarcasRelojEntity();
-		marcasReloj.setFecha("2022/09/05");
+		marcasReloj.setFecha("2022/08/05");
 		marcasReloj.setHora("08:00");
 		marcasReloj.setHoraSalida("20:31");
 		marcasReloj.setEmpleado(empleadoRepository.findByRut("21.142.354-k"));
 		marcasRelojRepository.save(marcasReloj);
+  		//////////////////////////
 
-		HorasExtraEntity horasExtra = new HorasExtraEntity();
-		horasExtra.setHoras(2);
-		horasExtra.setEmpleado(empleadoRepository.findByRut("21.142.354-k"));
-		horasExtraRepository.save(horasExtra);
-
-		assertThat(horasExtraService.guardarHorasExtra(2, "21.142.354-k", "2022/09/05")).isTrue();
+		assertThat(horasExtraService.guardarHorasExtra(2, "21.142.354-k", "2022/08/05")).isTrue();
 	}
 
 	@Test
 	void horasExtraTest2() {
 		MarcasRelojEntity marcasReloj = new MarcasRelojEntity();
-		marcasReloj.setFecha("2022/09/06");
+		marcasReloj.setFecha("2022/08/06");
 		marcasReloj.setHora("08:00");
 		marcasReloj.setHoraSalida("20:31");
 		marcasReloj.setEmpleado(empleadoRepository.findByRut("21.142.354-k"));
 		marcasRelojRepository.save(marcasReloj);
 
-		HorasExtraEntity horasExtra = new HorasExtraEntity();
-		horasExtra.setHoras(2);
-		horasExtra.setEmpleado(empleadoRepository.findByRut("21.142.354-k"));
-		horasExtraRepository.save(horasExtra);
-
 		// Horas incorrectas
-		assertThat(horasExtraService.guardarHorasExtra(3, "21.142.354-k", "2022/09/05")).isFalse();
+		assertThat(horasExtraService.guardarHorasExtra(3, "21.142.354-k", "2022/08/05")).isFalse();
 	}
 }
 
@@ -183,7 +197,7 @@ class JustificativoTest {
 
 	@Test
 	void justificativoTest(){
-		assertThat(justificativoService.guardarJustificativo("2022/09/01", "21.142.354-k")).isTrue();
+		assertThat(justificativoService.guardarJustificativo("2022/08/01", "21.142.354-k")).isTrue();
 	}
 }
 /*

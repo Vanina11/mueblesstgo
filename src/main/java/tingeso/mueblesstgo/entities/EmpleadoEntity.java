@@ -26,6 +26,8 @@ public class EmpleadoEntity {
     private String fechaNacimiento;
     private String categoria;
     private String fechaIngreso;
+    private Integer inasistencias = 0;
+    private Integer descuentoAtraso = 0;
 
     @OneToMany(mappedBy = "empleado")
     private List<MarcasRelojEntity> marcas;

@@ -51,7 +51,7 @@ public class HomeController {
     public String cargar(@RequestParam("archivos") MultipartFile file, RedirectAttributes ms) {
         boolean mensaje = cargarMarcasRelojService.guardarMarcasReloj(file);
         ms.addFlashAttribute("mensaje", mensaje);
-        return "redirect:/cargar";
+        return "redirect:/ingresar-marcas";
     }
 
     @PostMapping("/justificativo")

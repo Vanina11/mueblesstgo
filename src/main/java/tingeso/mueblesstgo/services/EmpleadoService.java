@@ -27,5 +27,18 @@ public class EmpleadoService {
         return empleadoRepository.findByRut(rut);
     }
 
+    public void incrementaDescuentoAtraso(EmpleadoEntity empleado, Integer descuento){
+        empleado.setDescuentoAtraso(empleado.getDescuentoAtraso() + descuento);
+        empleadoRepository.save(empleado);
+    }
+
+    public void incrementaInasistencias(EmpleadoEntity empleado){
+        empleado.setInasistencias(empleado.getInasistencias() + 1);
+        empleadoRepository.save(empleado);
+    }
+
+    public void a(){
+        System.out.println("a");
+    }
 
 }
