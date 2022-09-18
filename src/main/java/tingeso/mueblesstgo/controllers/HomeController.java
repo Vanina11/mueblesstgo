@@ -2,16 +2,17 @@ package tingeso.mueblesstgo.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-import tingeso.mueblesstgo.services.HorasExtraService;
-import tingeso.mueblesstgo.services.JustificativoService;
-import tingeso.mueblesstgo.services.MarcasRelojService;
-import tingeso.mueblesstgo.services.ValidadorService;
+import tingeso.mueblesstgo.entities.SueldosEntity;
+import tingeso.mueblesstgo.services.*;
+
+import java.util.List;
 
 @Controller
 @RequestMapping
@@ -26,6 +27,8 @@ public class HomeController {
 
     @Autowired
     private ValidadorService validadorService;
+    @Autowired
+    private OficinaRRHHService oficinaRRHHService;
 
     @GetMapping("/")
     public String home() {
@@ -45,6 +48,20 @@ public class HomeController {
     @GetMapping("/ingresar-horas")
     public String ingresarHoras() {
         return "horas";
+    }
+
+    @GetMapping("/calcular-sueldos")
+    public String calcularSueldos(RedirectAttributes ms) {
+        boolean mensaje = oficinaRRHHService.calcularSueldos();
+        ms.addFlashAttribute("mensaje", mensaje);
+        return "sueldos";
+    }
+
+    @GetMapping("/plantilla-sueldos")
+    public String plantillaSueldos(Model model) {
+        List<SueldosEntity> sueldos = oficinaRRHHService.obtenerSueldos();
+        model.addAttribute("sueldos", sueldos);
+        return "plantilla";
     }
 
     @PostMapping("/cargar")
@@ -74,6 +91,7 @@ public class HomeController {
         ms.addFlashAttribute("mensaje", mensaje);
         ms.addFlashAttribute("validarHoras", validarHoras);
         ms.addFlashAttribute("validarRut", validarRut);
+        ms.addFlashAttribute("validarFecha", validarFecha);
         return "redirect:/ingresar-horas";
     }
 

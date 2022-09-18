@@ -16,7 +16,6 @@ public class SueldosEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(unique = true, nullable = false)
     private Long id;
-    private String mes;
     private String rut;
     private String nombres;
     private String apellidos;

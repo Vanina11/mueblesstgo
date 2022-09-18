@@ -6,10 +6,10 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import tingeso.mueblesstgo.entities.JustificativosEntity;
 
-import java.util.ArrayList;
+import java.util.List;
 
 @Repository
 public interface JustificativoRepository extends JpaRepository<JustificativosEntity, Long> {
     @Query("select j from JustificativosEntity j where j.empleado.rut = :rut")
-    ArrayList<JustificativosEntity> findByRut(@Param("rut") String rut);
+    List<JustificativosEntity> findByRut(@Param("rut") String rut);
 }

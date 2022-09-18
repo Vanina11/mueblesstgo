@@ -7,11 +7,11 @@ import org.springframework.stereotype.Repository;
 import tingeso.mueblesstgo.entities.EmpleadoEntity;
 import tingeso.mueblesstgo.entities.HorasExtraEntity;
 
-import java.util.ArrayList;
+import java.util.List;
 
 @Repository
 public interface HorasExtraRepository extends JpaRepository<HorasExtraEntity, Long> {
     HorasExtraEntity findByEmpleadoAndMes(EmpleadoEntity empleado, String mes);
     @Query("select j from HorasExtraEntity j where j.empleado.rut = :rut")
-    ArrayList<HorasExtraEntity> findByRut(@Param("rut") String rut);
+    List<HorasExtraEntity> findByRut(@Param("rut") String rut);
 }

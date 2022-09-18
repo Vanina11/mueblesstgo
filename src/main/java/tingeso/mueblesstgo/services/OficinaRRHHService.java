@@ -5,7 +5,7 @@ import tingeso.mueblesstgo.entities.*;
 import org.springframework.stereotype.Service;
 import tingeso.mueblesstgo.repositories.SueldoRepository;
 
-import java.util.ArrayList;
+import java.util.List;
 
 @Service
 public class OficinaRRHHService {
@@ -20,9 +20,17 @@ public class OficinaRRHHService {
     @Autowired
     SueldoRepository sueldoRepository;
 
-    public void calcularSueldos(){
-        ArrayList<EmpleadoEntity> empleados = empleadoService.obtenerEmpleados();
+    // Descripción: Obtiene todos los cálculos de los sueldos
+    // Entrada: void
+    // Salida: ArrayList con todos los sueldos
+    public List<SueldosEntity> obtenerSueldos(){ return (List<SueldosEntity>) sueldoRepository.findAll(); }
 
+    // Descripción: Calcula el sueldo final de todos los empleados, considerando las horas extra realizadas, bonificaciones por años de servicio,
+    // descuentos por atrasos e inasistencias, y descuentos de cotizaciones previsionales y de salud.
+    // Entrada: void
+    // Salida: booleano que indica si el cálculo fue exitoso o no
+    public boolean calcularSueldos(){
+        List<EmpleadoEntity> empleados = empleadoService.obtenerEmpleados();
         for (int i = 0; i<empleados.size(); i++) {
             EmpleadoEntity empleado = empleados.get(i);
             SueldosEntity sueldo = crearSueldo(empleado);
@@ -37,9 +45,26 @@ public class OficinaRRHHService {
             sueldo.setSueldoFinal(sueldoBruto - sueldo.getCotizacionPrevisional() - sueldo.getCotizacionSalud());
             sueldoRepository.save(sueldo);
         }
+        return true;
 
     }
 
+    // Descripción: Crea un sueldo para un empleado, setea los datos del empleado, calcula el sueldo fijo, los años de servicio y la bonificación correspondiente
+    // Entrada: EmpleadoEntity con el empleado
+    // Salida: SueldosEntity con el sueldo creado
+    private SueldosEntity crearSueldo(EmpleadoEntity empleado) {
+        SueldosEntity sueldo = new SueldosEntity();
+        sueldo.setEmpleado(empleado);
+        sueldo.setRut(empleado.getRut());
+        sueldo.setNombres(empleado.getNombres());
+        sueldo.setApellidos(empleado.getApellidos());
+        sueldo.setCategoria(empleado.getCategoria());
+        Integer aniosS = calcularAniosServicio(empleado.getFechaIngreso());
+        sueldo.setAniosServicio(aniosS);
+        sueldo.setSueldoFijo(asignarSueldoFijo(empleado.getCategoria()));
+        sueldo.setMontoBonificacion(calcularBonoAniosServicio(aniosS) * sueldo.getSueldoFijo());
+        return sueldo;
+    }
 
     private double calculaMontoHorasExtras(EmpleadoEntity empleado){
         Integer horas = totalHorasExtras(empleado);
@@ -48,7 +73,7 @@ public class OficinaRRHHService {
     }
 
     public Integer totalHorasExtras(EmpleadoEntity empleado){
-        ArrayList<HorasExtraEntity> horasExtras = horasExtraService.obtenerHorasExtraPorRut(empleado);
+        List<HorasExtraEntity> horasExtras = horasExtraService.obtenerHorasExtraPorRut(empleado);
         Integer totalHoras = 0;
         for (int i = 0; i<horasExtras.size(); i++) {
             HorasExtraEntity horasExtra = horasExtras.get(i);
@@ -63,42 +88,23 @@ public class OficinaRRHHService {
             case "A" -> { return 25000; }
             case "B" -> { return 20000; }
             case "C" -> { return 10000; }
+            default -> { return 0; }
         }
-        return 0;
     }
 
     private double calculaDescuentos(EmpleadoEntity empleado){
         Integer sueldoFijo = asignarSueldoFijo(empleado.getCategoria());
-        System.out.println("EMPLEADO: " + empleado.getNombres());
         // Asume que el mes tiene 30 días
-        ArrayList<MarcasRelojEntity> marcas = marcasRelojService.obtenerMarcasRelojPorEmpleado(empleado);
-        System.out.println("TAMAÑO DE MARCAS: " + marcas.size());
+        List<MarcasRelojEntity> marcas = marcasRelojService.obtenerMarcasRelojPorEmpleado(empleado);
         // revisar justificativos
-        ArrayList<JustificativosEntity> justificativos = justificativoService.obtenerJustificativosPorRut(empleado);
-        System.out.println("TAMAÑO DE JUSTIFICATIVOS: " + justificativos.size());
+        List<JustificativosEntity> justificativos = justificativoService.obtenerJustificativosPorRut(empleado);
         Integer inasistencias = 30 - marcas.size() - justificativos.size();
-        System.out.println("INASISTENCIAS: " + inasistencias);
         //revisar
         double porcentajeDescuento = empleado.getDescuentoAtraso()/100.0;
-        double descuentoAtrasos = porcentajeDescuento*sueldoFijo + (inasistencias*0.15*sueldoFijo);
-        System.out.println("SUELDO FIJO:" + sueldoFijo);
-        System.out.println(inasistencias*0.15*sueldoFijo);
-        System.out.println("DESCUENTO ATRASOS: " + descuentoAtrasos);
-        return descuentoAtrasos;
+        return porcentajeDescuento*sueldoFijo + (inasistencias*0.15*sueldoFijo);
     }
 
-    private SueldosEntity crearSueldo(EmpleadoEntity empleados) {
-        SueldosEntity sueldo = new SueldosEntity();
-        sueldo.setEmpleado(empleados);
-        sueldo.setRut(empleados.getRut());
-        sueldo.setNombres(empleados.getNombres());
-        sueldo.setApellidos(empleados.getApellidos());
-        sueldo.setCategoria(empleados.getCategoria());
-        sueldo.setAniosServicio(calcularAniosServicio(empleados.getFechaIngreso()));
-        sueldo.setSueldoFijo(asignarSueldoFijo(empleados.getCategoria()));
-        sueldo.setMontoBonificacion(calcularBonoAniosServicio(sueldo.getAniosServicio()) * sueldo.getSueldoFijo());
-        return sueldo;
-    }
+
 
     private Integer calcularAniosServicio(String fecha){
         String anioI = fecha.split("/")[0];

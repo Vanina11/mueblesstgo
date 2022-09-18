@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" lang="">
+<head>
+    <meta charset="UTF-8">
+    <link
+            href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css"
+            rel="stylesheet"
+            integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1"
+            crossorigin="anonymous">
+    <title>Plantilla sueldos</title>
+</head>
+<body>
+<div class="table-responsive">
+    <table class="table table-dark table-striped">
+        <caption>Plantilla de sueldos</caption>
+        <thead class="thead-dark">
+        <tr>
+            <th>Rut</th>
+            <th>Nombre </th>
+            <th>Categoría</th>
+            <th>Años de Servicio</th>
+            <th>Sueldo Fijo</th>
+            <th>Monto Bonificación</th>
+            <th>Monto Horas Extra</th>
+            <th>Monto Descuentos</th>
+            <th>Sueldo Bruto</th>
+            <th>Cotización Previsional</th>
+            <th>Cotización Salud</th>
+            <th>Sueldo Final</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="sueldo:${sueldos}">
+            <td th:text="${sueldo.rut}"></td>
+            <td th:text="${sueldo.nombres + ' ' + sueldo.apellidos}"></td>
+            <td th:text="${sueldo.categoria}"></td>
+            <td th:text="${sueldo.aniosServicio}" ></td>
+            <td th:text="${sueldo.sueldoFijo}" ></td>
+            <td th:text="${sueldo.montoBonificacion}" ></td>
+            <td th:text="${sueldo.montoHorasExtra}" ></td>
+            <td th:text="${sueldo.montoDescuentos}" ></td>
+            <td th:text="${sueldo.sueldoBruto}" ></td>
+            <td th:text="${sueldo.cotizacionPrevisional}" ></td>
+            <td th:text="${sueldo.cotizacionSalud}" ></td>
+            <td th:text="${sueldo.sueldoFinal}" ></td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+<br>
+<div class="d-flex justify-content-center">
+<a href="/" class="btn btn-secondary" role="button">Ir a Inicio</a>
+</div>
+</body>
+</html>

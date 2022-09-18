@@ -1,0 +1,6 @@
+projectKey=proyectoMueblesStgo
+serverUrl=http://localhost:9000
+serverVersion=9.6.1.59531
+dashboardUrl=http://localhost:9000/dashboard?id=proyectoMueblesStgo
+ceTaskId=AYNRae3mI8tvcfylwELv
+ceTaskUrl=http://localhost:9000/api/ce/task?id=AYNRae3mI8tvcfylwELv

@@ -6,10 +6,8 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -22,7 +20,6 @@ import tingeso.mueblesstgo.repositories.MarcasRelojRepository;
 public class MarcasRelojService {
     // Indica la ubicación del archivo de texto que contiene las marcas de reloj
     private String directorio="..//mueblesstgo//cargas//";
-    private final Logger logg = LoggerFactory.getLogger(MarcasRelojService.class);
 
     @Autowired
     EmpleadoRepository empleadoRepository;
@@ -72,7 +69,6 @@ public class MarcasRelojService {
     // Entrada: Línea como string
     // Salida: void
     private void leerLinea(String linea){
-        // Separa la línea por ;
         String[] datos = linea.split(";");
         String fecha = datos[0];
         String hora = datos[1];
@@ -134,7 +130,7 @@ public class MarcasRelojService {
         return minutosAtraso > 70;
     }
 
-    public ArrayList<MarcasRelojEntity> obtenerMarcasRelojPorEmpleado(EmpleadoEntity empleado){
+    public List<MarcasRelojEntity> obtenerMarcasRelojPorEmpleado(EmpleadoEntity empleado){
         return marcasRelojRepository.findByRut(empleado.getRut());
     }
 }

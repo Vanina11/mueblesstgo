@@ -8,7 +8,7 @@ import org.springframework.stereotype.Repository;
 import tingeso.mueblesstgo.entities.EmpleadoEntity;
 import tingeso.mueblesstgo.entities.MarcasRelojEntity;
 
-import java.util.ArrayList;
+import java.util.List;
 
 @Repository
 public interface MarcasRelojRepository extends JpaRepository<MarcasRelojEntity, Long> {
@@ -16,7 +16,7 @@ public interface MarcasRelojRepository extends JpaRepository<MarcasRelojEntity, 
     MarcasRelojEntity findByFechaAndEmpleado(String fecha, EmpleadoEntity empleado);
 
     @Query("select m from MarcasRelojEntity m where m.empleado.rut = :rut")
-    ArrayList<MarcasRelojEntity> findByRut(@Param("rut") String rut);
+    List<MarcasRelojEntity> findByRut(@Param("rut") String rut);
 
 
 

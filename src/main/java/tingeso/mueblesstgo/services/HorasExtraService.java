@@ -4,13 +4,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import tingeso.mueblesstgo.entities.EmpleadoEntity;
 import tingeso.mueblesstgo.entities.HorasExtraEntity;
-import tingeso.mueblesstgo.entities.JustificativosEntity;
 import tingeso.mueblesstgo.entities.MarcasRelojEntity;
 import tingeso.mueblesstgo.repositories.EmpleadoRepository;
 import tingeso.mueblesstgo.repositories.HorasExtraRepository;
 import tingeso.mueblesstgo.repositories.MarcasRelojRepository;
 
-import java.util.ArrayList;
+import java.util.List;
 
 @Service
 public class HorasExtraService {
@@ -48,7 +47,7 @@ public class HorasExtraService {
 
     private boolean verificaHorasExtra(Integer horas, EmpleadoEntity empleado, String fecha){
         MarcasRelojEntity marcaReloj = marcasRelojRepository.findByFechaAndEmpleado(fecha, empleado);
-        String horaSalida[] = marcaReloj.getHoraSalida().split(":");
+        String[] horaSalida = marcaReloj.getHoraSalida().split(":");
         Integer horasReal = Integer.parseInt(horaSalida[0]) - 18;
         return horasReal > 0 && horasReal.equals(horas);
     }
@@ -61,7 +60,7 @@ public class HorasExtraService {
         horasExtraRepository.save(horasExtra);
     }
 
-    public ArrayList<HorasExtraEntity> obtenerHorasExtraPorRut(EmpleadoEntity empleado){
+    public List<HorasExtraEntity> obtenerHorasExtraPorRut(EmpleadoEntity empleado){
         return horasExtraRepository.findByRut(empleado.getRut());
     }
 }

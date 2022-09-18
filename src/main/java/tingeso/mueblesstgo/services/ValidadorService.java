@@ -19,7 +19,7 @@ public class ValidadorService {
     }
 
     public boolean validarFecha(String fecha) {
-        String fechaS[] = fecha.split("/");
+        String[] fechaS = fecha.split("/");
         if(fechaS.length == 3){
             int dia = Integer.parseInt(fechaS[2]);
             int mes = Integer.parseInt(fechaS[1]);

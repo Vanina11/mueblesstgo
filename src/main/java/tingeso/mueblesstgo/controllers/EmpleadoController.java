@@ -9,7 +9,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import java.util.ArrayList;
+import java.util.List;
 
 @Controller
 @RequestMapping
@@ -19,7 +19,7 @@ public class EmpleadoController {
 
     @GetMapping("/listar")
     public String listar(Model model) {
-        ArrayList<EmpleadoEntity> empleados=empleadoService.obtenerEmpleados();
+        List<EmpleadoEntity> empleados=empleadoService.obtenerEmpleados();
         model.addAttribute("empleados",empleados);
         return "index";
     }
