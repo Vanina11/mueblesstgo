@@ -1,14 +1,31 @@
 package tingeso.mueblesstgo.services;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import tingeso.mueblesstgo.entities.*;
 import org.springframework.stereotype.Service;
+import tingeso.mueblesstgo.entities.*;
 import tingeso.mueblesstgo.repositories.SueldoRepository;
 
 import java.util.List;
 
 @Service
-public class OficinaRRHHService {
+public class SueldosService {
+    private static final double DESCUENTO_PREVISIONAL = 0.1;
+    private static final double DESCUENTO_SALUD = 0.08;
+    private static final Integer HORAS_A = 25000;
+    private static final Integer HORAS_B = 20000;
+    private static final Integer HORAS_C = 10000;
+    private static final Integer DIAS_MES = 30;
+    private static final double DESCUENTO_INASISTENCIA = 0.15;
+    private static final Integer ANIO_ACTUAL = 2022;
+    private static final double BONIFICACION_1 = 0.05;
+    private static final double BONIFICACION_2 = 0.08;
+    private static final double BONIFICACION_3 = 0.11;
+    private static final double BONIFICACION_4 = 0.14;
+    private static final double BONIFICACION_5 = 0.17;
+    private static final Integer SUELDO_A = 1700000;
+    private static final Integer SUELDO_B = 1200000;
+    private static final Integer SUELDO_C = 800000;
+
     @Autowired
     EmpleadoService empleadoService;
     @Autowired
@@ -22,7 +39,7 @@ public class OficinaRRHHService {
 
     // Descripción: Obtiene todos los cálculos de los sueldos
     // Entrada: void
-    // Salida: ArrayList con todos los sueldos
+    // Salida: List con todos los sueldos
     public List<SueldosEntity> obtenerSueldos(){ return (List<SueldosEntity>) sueldoRepository.findAll(); }
 
     // Descripción: Calcula el sueldo final de todos los empleados, considerando las horas extra realizadas, bonificaciones por años de servicio,
@@ -40,8 +57,8 @@ public class OficinaRRHHService {
             sueldo.setMontoHorasExtra(horasExtra);
             double sueldoBruto = sueldo.getSueldoFijo() + sueldo.getMontoHorasExtra() + sueldo.getMontoBonificacion() - sueldo.getMontoDescuentos();
             sueldo.setSueldoBruto(sueldoBruto);
-            sueldo.setCotizacionPrevisional(sueldoBruto * 0.1);
-            sueldo.setCotizacionSalud(sueldoBruto * 0.08);
+            sueldo.setCotizacionPrevisional(sueldoBruto * DESCUENTO_PREVISIONAL);
+            sueldo.setCotizacionSalud(sueldoBruto * DESCUENTO_SALUD);
             sueldo.setSueldoFinal(sueldoBruto - sueldo.getCotizacionPrevisional() - sueldo.getCotizacionSalud());
             sueldoRepository.save(sueldo);
         }
@@ -52,7 +69,7 @@ public class OficinaRRHHService {
     // Descripción: Crea un sueldo para un empleado, setea los datos del empleado, calcula el sueldo fijo, los años de servicio y la bonificación correspondiente
     // Entrada: EmpleadoEntity con el empleado
     // Salida: SueldosEntity con el sueldo creado
-    private SueldosEntity crearSueldo(EmpleadoEntity empleado) {
+    public SueldosEntity crearSueldo(EmpleadoEntity empleado) {
         SueldosEntity sueldo = new SueldosEntity();
         sueldo.setEmpleado(empleado);
         sueldo.setRut(empleado.getRut());
@@ -66,12 +83,18 @@ public class OficinaRRHHService {
         return sueldo;
     }
 
-    private double calculaMontoHorasExtras(EmpleadoEntity empleado){
+    // Descripción: Calcula el monto final de las horas extra realizadas por un empleado
+    // Entrada: EmpleadoEntity con el empleado
+    // Salida: double con el monto final de las horas extra
+    public double calculaMontoHorasExtras(EmpleadoEntity empleado){
         Integer horas = totalHorasExtras(empleado);
         double montoPorHora = montoHorasExtras(empleado);
         return horas * montoPorHora;
     }
 
+    // Descripción: Calcula el total de horas extra realizadas por un empleado
+    // Entrada: EmpleadoEntity con el empleado
+    // Salida: Integer con el total de horas extra
     public Integer totalHorasExtras(EmpleadoEntity empleado){
         List<HorasExtraEntity> horasExtras = horasExtraService.obtenerHorasExtraPorRut(empleado);
         Integer totalHoras = 0;
@@ -82,56 +105,66 @@ public class OficinaRRHHService {
         return totalHoras;
     }
 
+    // Descripción: Calcula el monto por hora extra de un empleado según su categoría
+    // Entrada: EmpleadoEntity con el empleado
+    // Salida: double con el monto por hora extra
     public double montoHorasExtras(EmpleadoEntity empleado){
         String categoria = empleado.getCategoria();
         switch (categoria){
-            case "A" -> { return 25000; }
-            case "B" -> { return 20000; }
-            case "C" -> { return 10000; }
+            case "A" -> { return HORAS_A; }
+            case "B" -> { return HORAS_B; }
+            case "C" -> { return HORAS_C; }
             default -> { return 0; }
         }
     }
 
-    private double calculaDescuentos(EmpleadoEntity empleado){
+    // Descripción: Calcula el monto de descuentos por atrasos e inasistencias de un empleado
+    // Entrada: EmpleadoEntity con el empleado
+    // Salida: double con el monto de descuentos
+    public double calculaDescuentos(EmpleadoEntity empleado){
         Integer sueldoFijo = asignarSueldoFijo(empleado.getCategoria());
-        // Asume que el mes tiene 30 días
         List<MarcasRelojEntity> marcas = marcasRelojService.obtenerMarcasRelojPorEmpleado(empleado);
-        // revisar justificativos
         List<JustificativosEntity> justificativos = justificativoService.obtenerJustificativosPorRut(empleado);
-        Integer inasistencias = 30 - marcas.size() - justificativos.size();
-        //revisar
+        Integer inasistencias = DIAS_MES - marcas.size() - justificativos.size();
         double porcentajeDescuento = empleado.getDescuentoAtraso()/100.0;
-        return porcentajeDescuento*sueldoFijo + (inasistencias*0.15*sueldoFijo);
+        return porcentajeDescuento*sueldoFijo + (inasistencias*DESCUENTO_INASISTENCIA*sueldoFijo);
     }
 
-
-
-    private Integer calcularAniosServicio(String fecha){
+    // Descripción: Calcula los años de servicio de un empleado
+    // Entrada: String con la fecha de ingreso del empleado en formato AAAA/MM/DD
+    // Salida: Integer con los años de servicio
+    public Integer calcularAniosServicio(String fecha){
         String anioI = fecha.split("/")[0];
-        return 2022 - Integer.parseInt(anioI);
+        return ANIO_ACTUAL - Integer.parseInt(anioI);
     }
 
+    // Descripción: Calcula la bonificación por años de servicio de un empleado
+    // Entrada: Integer con los años de servicio
+    // Salida: double con el porcentaje de bonificación del sueldo fijo
     public double calcularBonoAniosServicio(Integer anios){
         if(anios < 5){
             return 0;
         } else if(anios < 10){
-            return 0.05;
+            return BONIFICACION_1;
         } else if(anios < 15){
-            return 0.08;
+            return BONIFICACION_2;
         } else if(anios < 20){
-            return 0.11;
+            return BONIFICACION_3;
         } else if(anios < 25){
-            return 0.14;
+            return BONIFICACION_4;
         } else {
-            return 0.17;
+            return BONIFICACION_5;
         }
     }
 
+    // Descripción: Asigna el sueldo fijo de un empleado según su categoría
+    // Entrada: String con la categoría del empleado
+    // Salida: Integer con el sueldo fijo
     public Integer asignarSueldoFijo(String categoria) {
         return switch (categoria) {
-            case "A" -> 1700000;
-            case "B" -> 1200000;
-            case "C" -> 800000;
+            case "A" -> SUELDO_A;
+            case "B" -> SUELDO_B;
+            case "C" -> SUELDO_C;
             default -> 0;
         };
     }

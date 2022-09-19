@@ -6,7 +6,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class EmpleadoService {
@@ -15,12 +14,8 @@ public class EmpleadoService {
 
     public List<EmpleadoEntity> obtenerEmpleados(){ return (List<EmpleadoEntity>) empleadoRepository.findAll(); }
 
-    public EmpleadoEntity guardarEmpleado(EmpleadoEntity empleado){
-        return empleadoRepository.save(empleado);
-    }
-
-    public Optional<EmpleadoEntity> obtenerPorId(Long id){
-        return empleadoRepository.findById(id);
+    public void guardarEmpleado(EmpleadoEntity empleado){
+        empleadoRepository.save(empleado);
     }
 
     public EmpleadoEntity obtenerPorRut(String rut){

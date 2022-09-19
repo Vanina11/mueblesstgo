@@ -1,25 +1,15 @@
 package tingeso.mueblesstgo;
 
 
-import org.checkerframework.checker.units.qual.A;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import tingeso.mueblesstgo.entities.EmpleadoEntity;
-import tingeso.mueblesstgo.entities.HorasExtraEntity;
-import tingeso.mueblesstgo.entities.JustificativosEntity;
 import tingeso.mueblesstgo.entities.MarcasRelojEntity;
 import tingeso.mueblesstgo.repositories.EmpleadoRepository;
 import tingeso.mueblesstgo.repositories.HorasExtraRepository;
-import tingeso.mueblesstgo.repositories.JustificativoRepository;
 import tingeso.mueblesstgo.repositories.MarcasRelojRepository;
-import tingeso.mueblesstgo.services.EmpleadoService;
-import tingeso.mueblesstgo.services.HorasExtraService;
-import tingeso.mueblesstgo.services.MarcasRelojService;
-import tingeso.mueblesstgo.services.JustificativoService;
-import tingeso.mueblesstgo.services.OficinaRRHHService;
-
-import java.util.ArrayList;
+import tingeso.mueblesstgo.services.*;
 
 import static org.assertj.core.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -35,10 +25,10 @@ class MueblesstgoApplicationTests {
 @SpringBootTest
 class SueldosTest{
 	@Autowired
-	OficinaRRHHService oficinaRRHHService;
+	SueldosService sueldosService;
 	@Test
 	void calcularSueldosTest(){
-		oficinaRRHHService.calcularSueldos();
+		sueldosService.calcularSueldos();
 	}
 }
 @SpringBootTest
