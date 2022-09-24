@@ -12,7 +12,7 @@ public class EmpleadoService {
     @Autowired
     EmpleadoRepository empleadoRepository;
 
-    public List<EmpleadoEntity> obtenerEmpleados(){ return (List<EmpleadoEntity>) empleadoRepository.findAll(); }
+    public List<EmpleadoEntity> obtenerEmpleados(){ return empleadoRepository.findAll(); }
 
     public void guardarEmpleado(EmpleadoEntity empleado){
         empleadoRepository.save(empleado);
@@ -32,5 +32,7 @@ public class EmpleadoService {
         empleadoRepository.save(empleado);
     }
 
-
+    public void eliminarPorRut(String rut){
+        empleadoRepository.deleteByRut(rut);
+    }
 }

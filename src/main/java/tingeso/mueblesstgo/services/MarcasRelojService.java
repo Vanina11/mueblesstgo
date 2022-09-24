@@ -7,6 +7,9 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
 import java.util.Objects;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -25,6 +28,7 @@ public class MarcasRelojService {
 
     // Indica la ubicación del archivo de texto que contiene las marcas de reloj
     private String directorio="..//mueblesstgo//cargas//";
+    private final Logger logg = LoggerFactory.getLogger(MarcasRelojService.class);
 
     @Autowired
     EmpleadoService empleadoService;
@@ -45,7 +49,7 @@ public class MarcasRelojService {
                 return true;
 
             } catch (IOException e) {
-                e.printStackTrace();
+                logg.error("ERROR", e);
                 return false;
             }
         }else{
@@ -57,13 +61,15 @@ public class MarcasRelojService {
     // Entrada: Path con la ruta del archivo de texto
     // Salida: void
     public void leerMarcasReloj(Path path) throws IOException {
-        BufferedReader br = null;
-        br = new BufferedReader(new java.io.FileReader(path.toString()));
-        String linea = br.readLine();
-        // Hasta que no se llegue al final del archivo
-        while (linea != null){
-            leerLinea(linea);
-            linea = br.readLine();
+        try(BufferedReader br = new BufferedReader(new java.io.FileReader(path.toString()))){
+            String linea = br.readLine();
+            // Hasta que no se llegue al final del archivo
+            while (linea != null){
+                leerLinea(linea);
+                linea = br.readLine();
+            }
+        } catch (IOException f){
+            logg.error("ERROR", f);
         }
     }
 

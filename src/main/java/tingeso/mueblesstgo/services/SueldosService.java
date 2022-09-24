@@ -5,6 +5,8 @@ import org.springframework.stereotype.Service;
 import tingeso.mueblesstgo.entities.*;
 import tingeso.mueblesstgo.repositories.SueldoRepository;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.List;
 
 @Service
@@ -14,7 +16,8 @@ public class SueldosService {
     private static final Integer HORAS_A = 25000;
     private static final Integer HORAS_B = 20000;
     private static final Integer HORAS_C = 10000;
-    private static final Integer DIAS_MES = 30;
+    // Considera 20 días hábiles de trabajo por mes
+    private static final Integer DIAS_MES = 20;
     private static final double DESCUENTO_INASISTENCIA = 0.15;
     private static final Integer ANIO_ACTUAL = 2022;
     private static final double BONIFICACION_1 = 0.05;
@@ -40,7 +43,7 @@ public class SueldosService {
     // Descripción: Obtiene todos los cálculos de los sueldos
     // Entrada: void
     // Salida: List con todos los sueldos
-    public List<SueldosEntity> obtenerSueldos(){ return (List<SueldosEntity>) sueldoRepository.findAll(); }
+    public List<SueldosEntity> obtenerSueldos(){ return sueldoRepository.findAll(); }
 
     // Descripción: Calcula el sueldo final de todos los empleados, considerando las horas extra realizadas, bonificaciones por años de servicio,
     // descuentos por atrasos e inasistencias, y descuentos de cotizaciones previsionales y de salud.
@@ -52,14 +55,14 @@ public class SueldosService {
             EmpleadoEntity empleado = empleados.get(i);
             SueldosEntity sueldo = crearSueldo(empleado);
             double descuentoAtrasos = calculaDescuentos(empleado);
-            sueldo.setMontoDescuentos(descuentoAtrasos);
+            sueldo.setMontoDescuentos(redondear(descuentoAtrasos));
             double horasExtra = calculaMontoHorasExtras(empleado);
-            sueldo.setMontoHorasExtra(horasExtra);
+            sueldo.setMontoHorasExtra(redondear(horasExtra));
             double sueldoBruto = sueldo.getSueldoFijo() + sueldo.getMontoHorasExtra() + sueldo.getMontoBonificacion() - sueldo.getMontoDescuentos();
-            sueldo.setSueldoBruto(sueldoBruto);
-            sueldo.setCotizacionPrevisional(sueldoBruto * DESCUENTO_PREVISIONAL);
-            sueldo.setCotizacionSalud(sueldoBruto * DESCUENTO_SALUD);
-            sueldo.setSueldoFinal(sueldoBruto - sueldo.getCotizacionPrevisional() - sueldo.getCotizacionSalud());
+            sueldo.setSueldoBruto(redondear(sueldoBruto));
+            sueldo.setCotizacionPrevisional(redondear(sueldoBruto * DESCUENTO_PREVISIONAL));
+            sueldo.setCotizacionSalud(redondear(sueldoBruto * DESCUENTO_SALUD));
+            sueldo.setSueldoFinal(redondear(sueldoBruto - sueldo.getCotizacionPrevisional() - sueldo.getCotizacionSalud()));
             sueldoRepository.save(sueldo);
         }
         return true;
@@ -79,7 +82,7 @@ public class SueldosService {
         Integer aniosS = calcularAniosServicio(empleado.getFechaIngreso());
         sueldo.setAniosServicio(aniosS);
         sueldo.setSueldoFijo(asignarSueldoFijo(empleado.getCategoria()));
-        sueldo.setMontoBonificacion(calcularBonoAniosServicio(aniosS) * sueldo.getSueldoFijo());
+        sueldo.setMontoBonificacion(redondear(calcularBonoAniosServicio(aniosS) * sueldo.getSueldoFijo()));
         return sueldo;
     }
 
@@ -167,5 +170,13 @@ public class SueldosService {
             case "C" -> SUELDO_C;
             default -> 0;
         };
+    }
+
+    // Descripción: Redondea un número a dos decimales
+    // Entrada: double con el número a redondear
+    // Salida: double con el número redondeado
+    private double redondear(double numero){
+        BigDecimal bd = new BigDecimal(numero).setScale(2, RoundingMode.HALF_UP);
+        return bd.doubleValue();
     }
 }

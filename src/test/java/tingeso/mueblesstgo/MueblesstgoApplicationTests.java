@@ -14,14 +14,7 @@ import tingeso.mueblesstgo.services.*;
 import static org.assertj.core.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-@SpringBootTest
-class MueblesstgoApplicationTests {
-
-	@Test
-	void contextLoads() {
-	}
-
-}
+/*
 @SpringBootTest
 class SueldosTest{
 	@Autowired
@@ -87,13 +80,13 @@ class EmpleadoTest {
 	}
 
 	@Test
-	public void encontrarEmpleadoPorRut() {
+	void encontrarEmpleadoPorRut() {
 		EmpleadoEntity empleado = new EmpleadoEntity();
 		empleado.setRut("27.134.678-6");
 		empleado.setNombres("Alex");
 		empleado.setApellidos("Pacheco");
 		empleadoService.guardarEmpleado(empleado);
-		EmpleadoEntity empleadoRut = empleadoRepository.findByRut(empleado.getRut());
+		EmpleadoEntity empleadoRut = empleadoService.obtenerPorRut(empleado.getRut());
 		assertEquals(empleadoRut.getRut(), empleado.getRut());
 	}
 }
@@ -125,8 +118,8 @@ class MarcasRelojTest{
 	void encontrarFechaYEmpleado(){
 		marcasRelojService.crearMarcaReloj("2022/08/07", "08:10", "21.142.354-k");
 		MarcasRelojEntity marcasReloj = marcasRelojRepository.findByFechaAndEmpleado("2022/08/07", empleadoRepository.findByRut("21.142.354-k"));
-		assertEquals(marcasReloj.getFecha(), "2022/08/07");
-		assertEquals(marcasReloj.getEmpleado().getRut(), "21.142.354-k");
+		assertEquals("2022/08/07", marcasReloj.getFecha());
+		assertEquals("21.142.354-k", marcasReloj.getEmpleado().getRut());
 	}
 }
 
@@ -180,6 +173,6 @@ class JustificativoTest {
 }
 
 
-
+*/
 
 

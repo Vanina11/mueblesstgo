@@ -7,4 +7,6 @@ import tingeso.mueblesstgo.entities.EmpleadoEntity;
 @Repository
 public interface EmpleadoRepository extends JpaRepository<EmpleadoEntity, Long> {
     EmpleadoEntity findByRut(String rut);
+
+    void deleteByRut(String rut);
 }

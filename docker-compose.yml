@@ -1,0 +1,29 @@
+version: '3.1'
+
+services:
+  db:
+    image: postgres:latest
+    container_name: db
+    environment:
+      - POSTGRES_DB=MueblesStgo
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=Zoe123
+    volumes:
+      - /var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+
+  app:
+    image: "mueblesstgo:latest"
+    build:
+      context: .
+    container_name: app
+    depends_on:
+      - db
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://db:5432/MueblesStgo
+      - SPRING_DATASOURCE_USERNAME=postgres
+      - SPRING_DATASOURCE_PASSWORD=Zoe123
+      - SPRING_JPA_HIBERNATE_DDL_AUTO=update
+    ports:
+      - "8090:8090"

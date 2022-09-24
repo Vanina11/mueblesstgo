@@ -18,9 +18,10 @@ public class SueldosController {
     private SueldosService sueldosService;
 
     @GetMapping("/calcular-sueldos")
-    public String calcularSueldos(RedirectAttributes ms) {
+    public String calcularSueldos(Model model) {
         boolean mensaje = sueldosService.calcularSueldos();
-        ms.addFlashAttribute("mensaje", mensaje);
+        System.out.println(mensaje);
+        model.addAttribute("mensaje", mensaje);
         return "sueldos";
     }
 
