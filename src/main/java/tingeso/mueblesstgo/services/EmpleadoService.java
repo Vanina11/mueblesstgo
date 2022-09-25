@@ -32,7 +32,4 @@ public class EmpleadoService {
         empleadoRepository.save(empleado);
     }
 
-    public void eliminarPorRut(String rut){
-        empleadoRepository.deleteByRut(rut);
-    }
 }

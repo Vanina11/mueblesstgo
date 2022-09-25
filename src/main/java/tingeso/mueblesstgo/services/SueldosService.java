@@ -175,7 +175,7 @@ public class SueldosService {
     // Descripción: Redondea un número a dos decimales
     // Entrada: double con el número a redondear
     // Salida: double con el número redondeado
-    private double redondear(double numero){
+    public double redondear(double numero){
         BigDecimal bd = BigDecimal.valueOf(numero).setScale(2, RoundingMode.HALF_UP);
         return bd.doubleValue();
     }
