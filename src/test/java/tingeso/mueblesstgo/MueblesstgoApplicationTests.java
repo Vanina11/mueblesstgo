@@ -21,6 +21,27 @@ class EmpleadoTest {
     private EmpleadoRepository empleadoRepository;
     String RUT = "12345678-9";
 
+    /*
+    @Test
+    void crearEmpleados(){
+        EmpleadoEntity empleado = new EmpleadoEntity();
+        empleado.setRut("20.457.671-9");
+        empleado.setNombres("Juan Ignacio");
+        empleado.setApellidos("Perez Lopez");
+        empleado.setFechaNacimiento("1998/10/10");
+        empleado.setCategoria("A");
+        empleado.setFechaIngreso("2020/10/10");
+        empleadoService.guardarEmpleado(empleado);
+
+        EmpleadoEntity empleado1 = new EmpleadoEntity();
+        empleado1.setRut("27.752.982-4");
+        empleado1.setNombres("Ana Maria");
+        empleado1.setApellidos("Gonzalez Perez");
+        empleado1.setFechaNacimiento("1959/08/23");
+        empleado1.setCategoria("B");
+        empleado1.setFechaIngreso("2005/05/10");
+        empleadoService.guardarEmpleado(empleado1);
+    }*/
     @Test
     void obtenerPorRutTest() {
         EmpleadoEntity empleado = new EmpleadoEntity();
@@ -230,7 +251,7 @@ class HorasExtraTest{
         marcasRelojService.crearMarcaReloj(FECHA, HORA, RUT);
         marcasRelojService.leerLinea(LINEA);
 
-        boolean resultado = horasExtraService.guardarHorasExtra(CANTIDAD_2, RUT, MES);
+        boolean resultado = horasExtraService.guardarHorasExtra(CANTIDAD_2, RUT, FECHA);
         // Horas extra realizadas no coinciden con ingresadas
         assertEquals(false, resultado);
 
@@ -239,12 +260,13 @@ class HorasExtraTest{
     }
     @Test
     void crearHoraExtra2Test(){
-        boolean resultado = horasExtraService.guardarHorasExtra(CANTIDAD, "11111111-1", MES);
+        boolean resultado = horasExtraService.guardarHorasExtra(CANTIDAD, "11111111-1", FECHA);
+        // Rut no existe
         assertEquals(false, resultado);
     }
-    /*
+
     @Test
-    void crearHoraExtraTest2(){
+    void crearHoraExtra3Test(){
         EmpleadoEntity empleado = new EmpleadoEntity();
         empleado.setRut(RUT);
         empleadoService.guardarEmpleado(empleado);
@@ -252,14 +274,38 @@ class HorasExtraTest{
         marcasRelojService.crearMarcaReloj(FECHA, HORA, RUT);
         marcasRelojService.leerLinea(LINEA);
 
-        boolean resultado = horasExtraService.guardarHorasExtra(CANTIDAD, RUT, MES);
+        boolean resultado = horasExtraService.guardarHorasExtra(CANTIDAD, RUT, FECHA);
+        // Horas extra realizadas coinciden con ingresadas
         assertEquals(true, resultado);
 
         horasExtraRepository.delete(horasExtraService.obtenerHorasExtraPorRut(empleado).get(0));
         marcasRelojRepository.delete(marcasRelojService.obtenerMarcaRelojPorFechaYEmpleado(FECHA, empleado));
         empleadoRepository.delete(empleado);
     }
-     */
+
+    @Test
+    void crearHoraExtra4Test(){
+        EmpleadoEntity empleado = new EmpleadoEntity();
+        empleado.setRut(RUT);
+        empleadoService.guardarEmpleado(empleado);
+
+        marcasRelojService.crearMarcaReloj(FECHA, HORA, RUT);
+        marcasRelojService.leerLinea(LINEA);
+        boolean resultado = horasExtraService.guardarHorasExtra(CANTIDAD, RUT, FECHA);
+
+        marcasRelojService.crearMarcaReloj("2022/08/24", HORA, RUT);
+        marcasRelojService.leerLinea("2022/08/24;21:00;12345678-9");
+        boolean resultado2 = horasExtraService.guardarHorasExtra(CANTIDAD, RUT, "2022/08/24");
+
+        // Horas extra realizadas coinciden con ingresadas
+        assertEquals(true, resultado2);
+
+        horasExtraRepository.delete(horasExtraService.obtenerHorasExtraPorRut(empleado).get(0));
+        marcasRelojRepository.delete(marcasRelojService.obtenerMarcaRelojPorFechaYEmpleado(FECHA, empleado));
+        marcasRelojRepository.delete(marcasRelojService.obtenerMarcaRelojPorFechaYEmpleado("2022/08/24", empleado));
+        empleadoRepository.delete(empleado);
+    }
+
 }
 
 @SpringBootTest
@@ -410,7 +456,7 @@ class SueldosTest{
         empleado.setRut(RUT);
         empleado.setCategoria("A");
         empleadoService.guardarEmpleado(empleado);
-        for(int i=0; i<20; i++){
+        for(int i=1; i<31; i++){
             if(i < 10){
                 marcasRelojService.crearMarcaReloj("2022/08/0" + i , HORA, RUT);
             }else{
