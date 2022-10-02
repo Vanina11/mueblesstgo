@@ -32,4 +32,8 @@ public class EmpleadoService {
         empleadoRepository.save(empleado);
     }
 
+    public void eliminarEmpleados(){
+        empleadoRepository.deleteAll();
+    }
+
 }

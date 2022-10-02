@@ -39,4 +39,24 @@ public class ValidadorService {
         }
     }
 
+    public boolean validarCategoria(String categoria){
+        return categoria.equals("A") || categoria.equals("B") || categoria.equals("C");
+    }
+
+    public boolean crearEmpleado(String nombres, String apellidos, String rut, String categoria, String fechaIngreso, String fechaNacimiento){
+        if(!validarRut(rut) && validarFecha(fechaIngreso) && validarFecha(fechaNacimiento) && validarCategoria(categoria)){
+            EmpleadoEntity empleado = new EmpleadoEntity();
+            empleado.setNombres(nombres);
+            empleado.setApellidos(apellidos);
+            empleado.setRut(rut);
+            empleado.setCategoria(categoria);
+            empleado.setFechaIngreso(fechaIngreso);
+            empleado.setFechaNacimiento(fechaNacimiento);
+            empleadoService.guardarEmpleado(empleado);
+            return true;
+        }else{
+            return false;
+        }
+    }
+
 }

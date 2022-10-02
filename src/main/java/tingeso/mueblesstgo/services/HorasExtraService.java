@@ -76,4 +76,8 @@ public class HorasExtraService {
     public List<HorasExtraEntity> obtenerHorasExtraPorRut(EmpleadoEntity empleado){
         return horasExtraRepository.findByRut(empleado.getRut());
     }
+
+    public void eliminarHorasExtra(){
+        horasExtraRepository.deleteAll();
+    }
 }

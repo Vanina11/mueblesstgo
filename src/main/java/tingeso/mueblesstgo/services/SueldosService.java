@@ -179,4 +179,13 @@ public class SueldosService {
         BigDecimal bd = BigDecimal.valueOf(numero).setScale(2, RoundingMode.HALF_UP);
         return bd.doubleValue();
     }
+
+    public void limpiarRegistros(){
+        sueldoRepository.deleteAll();
+        marcasRelojService.eliminarMarcasReloj();
+        justificativoService.eliminarJustificativos();
+        horasExtraService.eliminarHorasExtra();
+        empleadoService.eliminarEmpleados();
+
+    }
 }

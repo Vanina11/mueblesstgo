@@ -40,5 +40,8 @@ public class JustificativoService {
         return justificativoRepository.findByRut(empleado.getRut());
     }
 
+    public void eliminarJustificativos(){
+        justificativoRepository.deleteAll();
+    }
 
 }

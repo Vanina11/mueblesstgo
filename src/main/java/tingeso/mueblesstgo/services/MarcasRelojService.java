@@ -1,6 +1,7 @@
 package tingeso.mueblesstgo.services;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -27,7 +28,7 @@ public class MarcasRelojService {
     private static final Integer DESCUENTO_4 = 15;
 
     // Indica la ubicación del archivo de texto que contiene las marcas de reloj
-    private String directorio="..//mueblesstgo//cargas//";
+    private String directorio="cargas" + File.pathSeparator;
     private final Logger logg = LoggerFactory.getLogger(MarcasRelojService.class);
 
     @Autowired
@@ -152,6 +153,10 @@ public class MarcasRelojService {
 
     public MarcasRelojEntity obtenerMarcaRelojPorFechaYEmpleado(String fecha, EmpleadoEntity empleado){
         return marcasRelojRepository.findByFechaAndEmpleado(fecha, empleado);
+    }
+
+    public void eliminarMarcasReloj(){
+        marcasRelojRepository.deleteAll();
     }
 
 }

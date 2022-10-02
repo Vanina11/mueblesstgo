@@ -14,7 +14,7 @@
 	<name>mueblesstgo</name>
 	<description>Entrega 1 Tingeso</description>
 	<properties>
-		<java.version>18</java.version>
+		<java.version>11</java.version>
 		<sonar.exclusions>src/main/java/tingeso/mueblesstgo/entities/*,
 			src/main/java/tingeso/mueblesstgo/controllers/*,
 			src/main/java/tingeso/mueblesstgo/MueblesstgoApplication.java

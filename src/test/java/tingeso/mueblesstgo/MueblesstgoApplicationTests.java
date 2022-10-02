@@ -13,6 +13,7 @@ import java.util.List;
 import static org.assertj.core.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+/*
 @SpringBootTest
 class EmpleadoTest {
     @Autowired
@@ -21,7 +22,7 @@ class EmpleadoTest {
     private EmpleadoRepository empleadoRepository;
     String RUT = "12345678-9";
 
-    /*
+
     @Test
     void crearEmpleados(){
         EmpleadoEntity empleado = new EmpleadoEntity();
@@ -41,7 +42,9 @@ class EmpleadoTest {
         empleado1.setCategoria("B");
         empleado1.setFechaIngreso("2005/05/10");
         empleadoService.guardarEmpleado(empleado1);
-    }*/
+    }
+
+
     @Test
     void obtenerPorRutTest() {
         EmpleadoEntity empleado = new EmpleadoEntity();
@@ -615,7 +618,7 @@ class SueldosTest{
 
     }
 }
-
+*/
 
 
 
