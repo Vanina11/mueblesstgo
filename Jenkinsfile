@@ -12,7 +12,7 @@ pipeline {
         }
         stage('Test') {
             steps {
-                bat 'sonar:sonar'
+                bat 'sonar-scanner'
             }
         }
         stage('Build Docker Image') {
