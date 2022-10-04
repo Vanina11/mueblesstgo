@@ -12,7 +12,7 @@ pipeline {
         }
         stage('Test') {
             steps {
-                bat 'mvn test'
+                bat 'sonar:sonar'
             }
         }
         stage('Build Docker Image') {
