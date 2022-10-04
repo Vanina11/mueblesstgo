@@ -13,7 +13,7 @@ import java.util.List;
 import static org.assertj.core.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-/*
+
 @SpringBootTest
 class EmpleadoTest {
     @Autowired
@@ -618,7 +618,7 @@ class SueldosTest{
 
     }
 }
-*/
+
 
 
 
