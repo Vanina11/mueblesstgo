@@ -17,7 +17,7 @@ public class SueldosService {
     private static final Integer HORAS_B = 20000;
     private static final Integer HORAS_C = 10000;
     // Considera 20 días hábiles de trabajo por mes
-    private static final Integer DIAS_MES = 30;
+    private static final Integer DIAS_MES = 20;
     private static final double DESCUENTO_INASISTENCIA = 0.15;
     private static final Integer ANIO_ACTUAL = 2022;
     private static final double BONIFICACION_1 = 0.05;
