@@ -1,6 +1,5 @@
 package tingeso.mueblesstgo;
 
-
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -21,29 +20,6 @@ class EmpleadoTest {
     @Autowired
     private EmpleadoRepository empleadoRepository;
     String RUT = "12345678-9";
-
-
-    @Test
-    void crearEmpleados(){
-        EmpleadoEntity empleado = new EmpleadoEntity();
-        empleado.setRut("20.457.671-9");
-        empleado.setNombres("Juan Ignacio");
-        empleado.setApellidos("Perez Lopez");
-        empleado.setFechaNacimiento("1998/10/10");
-        empleado.setCategoria("A");
-        empleado.setFechaIngreso("2020/10/10");
-        empleadoService.guardarEmpleado(empleado);
-
-        EmpleadoEntity empleado1 = new EmpleadoEntity();
-        empleado1.setRut("27.752.982-4");
-        empleado1.setNombres("Ana Maria");
-        empleado1.setApellidos("Gonzalez Perez");
-        empleado1.setFechaNacimiento("1959/08/23");
-        empleado1.setCategoria("B");
-        empleado1.setFechaIngreso("2005/05/10");
-        empleadoService.guardarEmpleado(empleado1);
-    }
-
 
     @Test
     void obtenerPorRutTest() {
@@ -86,6 +62,16 @@ class EmpleadoTest {
         assertEquals(15,empleadoRut.getDescuentoAtraso());
         empleadoRepository.delete(empleado);
     }
+
+    @Test
+    void eliminarEmpeladosTest(){
+        EmpleadoEntity empleado = new EmpleadoEntity();
+        empleado.setRut(RUT);
+        empleadoService.guardarEmpleado(empleado);
+        empleadoService.eliminarEmpleados();
+        assertEquals(0,empleadoService.obtenerEmpleados().size());
+    }
+
 }
 
 @SpringBootTest
@@ -179,6 +165,21 @@ class MarcasRelojTest{
         marcasRelojRepository.delete(marcas);
         empleadoRepository.delete(empleado);
     }
+
+    @Test
+    void crearMarcaReloj2Test(){
+        EmpleadoEntity empleado = new EmpleadoEntity();
+        empleado.setRut(RUT);
+        empleadoService.guardarEmpleado(empleado);
+
+        marcasRelojService.crearMarcaReloj(FECHA, "10:00", RUT);
+        MarcasRelojEntity marcas = marcasRelojService.obtenerMarcaRelojPorFechaYEmpleado(FECHA, empleado);
+        assertThat(marcas).isNotNull();
+
+        marcasRelojRepository.delete(marcas);
+        empleadoRepository.delete(empleado);
+    }
+
     @Test
     void leerLineaTest(){
         EmpleadoEntity empleado = new EmpleadoEntity();
@@ -190,6 +191,19 @@ class MarcasRelojTest{
         assertThat(marcas).isNotNull();
 
         marcasRelojRepository.delete(marcas);
+        empleadoRepository.delete(empleado);
+    }
+    @Test
+    void eliminarMarcasRelojTest(){
+        EmpleadoEntity empleado = new EmpleadoEntity();
+        empleado.setRut(RUT);
+        empleadoService.guardarEmpleado(empleado);
+
+        marcasRelojService.crearMarcaReloj(FECHA, HORA, RUT);
+        marcasRelojService.leerLinea(LINEA);
+        marcasRelojService.eliminarMarcasReloj();
+        assertEquals(0, marcasRelojRepository.findAll().size());
+
         empleadoRepository.delete(empleado);
     }
 }
@@ -309,6 +323,27 @@ class HorasExtraTest{
         empleadoRepository.delete(empleado);
     }
 
+    @Test
+    void eliminarMarcasRelojTest(){
+        EmpleadoEntity empleado = new EmpleadoEntity();
+        empleado.setRut(RUT);
+        empleadoService.guardarEmpleado(empleado);
+
+        marcasRelojService.crearMarcaReloj(FECHA, HORA, RUT);
+        marcasRelojService.leerLinea(LINEA);
+        boolean resultado = horasExtraService.guardarHorasExtra(CANTIDAD, RUT, FECHA);
+
+        marcasRelojService.crearMarcaReloj("2022/08/24", HORA, RUT);
+        marcasRelojService.leerLinea("2022/08/24;21:00;12345678-9");
+        boolean resultado2 = horasExtraService.guardarHorasExtra(CANTIDAD, RUT, "2022/08/24");
+
+        horasExtraService.eliminarHorasExtra();
+        assertEquals(0, horasExtraRepository.findAll().size());
+        marcasRelojRepository.delete(marcasRelojService.obtenerMarcaRelojPorFechaYEmpleado(FECHA, empleado));
+        marcasRelojRepository.delete(marcasRelojService.obtenerMarcaRelojPorFechaYEmpleado("2022/08/24", empleado));
+        empleadoRepository.delete(empleado);
+    }
+
 }
 
 @SpringBootTest
@@ -356,13 +391,32 @@ class JustificativoTest {
     }
 
     @Test
-    void guardarJustificativoTest2(){
+    void guardarJustificativo2Test(){
         EmpleadoEntity empleado = new EmpleadoEntity();
         empleado.setRut(RUT);
         empleadoService.guardarEmpleado(empleado);
 
         boolean resultado = justificativoService.guardarJustificativo(FECHA_2, RUT);
         assertEquals(false, resultado);
+
+        empleadoRepository.delete(empleado);
+    }
+
+    @Test
+    void guardarJustificativo3Test(){
+        boolean resultado = justificativoService.guardarJustificativo(FECHA_2, "11.111.111-1");
+        assertEquals(false, resultado);
+    }
+
+    @Test
+    void eliminarJustificativosTest(){
+        EmpleadoEntity empleado = new EmpleadoEntity();
+        empleado.setRut(RUT);
+        empleadoService.guardarEmpleado(empleado);
+
+        boolean resultado = justificativoService.guardarJustificativo(FECHA, RUT);
+        justificativoService.eliminarJustificativos();
+        assertEquals(0, justificativoRepository.findAll().size());
 
         empleadoRepository.delete(empleado);
     }
@@ -378,12 +432,6 @@ class SueldosTest{
     EmpleadoRepository empleadoRepository;
     @Autowired
     EmpleadoService empleadoService;
-    @Autowired
-    JustificativoService justificativoService;
-    @Autowired
-    JustificativoRepository justificativoRepository;
-    @Autowired
-    HorasExtraService horasExtraService;
     @Autowired
     HorasExtraRepository horasExtraRepository;
     @Autowired
@@ -617,7 +665,79 @@ class SueldosTest{
         empleadoRepository.delete(empleado);
 
     }
+
+    @Test
+    void limpiarRegistrosTest(){
+        EmpleadoEntity empleado = new EmpleadoEntity();
+        empleado.setRut(RUT);
+        empleado.setNombres("Sebastián Ignacio");
+        empleado.setApellidos("Correa Chávez");
+        empleado.setFechaIngreso("2020/08/01");
+        empleado.getFechaNacimiento();
+        empleado.setCategoria("A");
+        empleadoService.guardarEmpleado(empleado);
+        SueldosEntity sueldo = sueldosService.crearSueldo(empleado);
+        sueldosService.limpiarRegistros();
+        assertEquals(0, sueldosRepository.findAll().size());
+        empleadoRepository.delete(empleado);
+    }
+
 }
+
+@SpringBootTest
+class ValidadorTest{
+    @Autowired
+    ValidadorService validadorService;
+    @Autowired
+    EmpleadoRepository empleadoRepository;
+
+    @Test
+    void crearEmpleadoTest(){
+        boolean resultado = validadorService.crearEmpleado("Empleado Test", "Apellidos Test", "99.999.999-9",
+                "A", "2022/08/08", "2000/08/08");
+        assertEquals(true, resultado);
+        EmpleadoEntity empleado = empleadoRepository.findByRut("99.999.999-9");
+        empleadoRepository.delete(empleado);
+    }
+
+    @Test
+    void crearEmpleado2Test(){
+        boolean resultado = validadorService.crearEmpleado("Empleado Test", "Apellidos Test", "99.999.999-9",
+                "D", "2022/08/08", "2000/08/08");
+        assertEquals(false, resultado);
+    }
+
+    @Test
+    void validarCategoriaATest(){
+        boolean resultado = validadorService.validarCategoria("A");
+        assertEquals(true, resultado);
+    }
+
+    @Test
+    void validarCategoriaBTest(){
+        boolean resultado = validadorService.validarCategoria("B");
+        assertEquals(true, resultado);
+    }
+
+    @Test
+    void validarCategoriaCTest(){
+        boolean resultado = validadorService.validarCategoria("C");
+        assertEquals(true, resultado);
+    }
+
+    @Test
+    void validarCategoriaDTest(){
+        boolean resultado = validadorService.validarCategoria("D");
+        assertEquals(false, resultado);
+    }
+
+    @Test
+    void validarHorasTest(){
+        boolean resultado = validadorService.validarHoras(-1);
+        assertEquals(false, resultado);
+    }
+}
+
 
 
 

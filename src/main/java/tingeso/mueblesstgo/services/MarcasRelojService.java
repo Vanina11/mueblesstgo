@@ -18,6 +18,8 @@ import tingeso.mueblesstgo.entities.EmpleadoEntity;
 import tingeso.mueblesstgo.entities.MarcasRelojEntity;
 import tingeso.mueblesstgo.repositories.MarcasRelojRepository;
 
+import lombok.Generated;
+
 @Service
 public class MarcasRelojService {
     private static final Integer HORA_LLEGADA = 8;
@@ -40,6 +42,7 @@ public class MarcasRelojService {
     // Descripción: Permite importar el archivo de marcas de reloj, para esto verifica que no esté vacío y que la extensiòn sea .txt
     // Entrada: Multifile para el archivo de texto con las marcas de reloj
     // Salida: booleano que indica si el archivo fue importado o no
+    @Generated
     public boolean guardarMarcasReloj(MultipartFile file) {
         if (!file.isEmpty() && Objects.requireNonNull(file.getOriginalFilename()).endsWith(".txt")) {
             try {
@@ -61,6 +64,7 @@ public class MarcasRelojService {
     // Descripción: Lee el contenido del archivo de las marcas de reloj
     // Entrada: Path con la ruta del archivo de texto
     // Salida: void
+    @Generated
     public void leerMarcasReloj(Path path) throws IOException {
         try(BufferedReader br = new BufferedReader(new java.io.FileReader(path.toString()))){
             String linea = br.readLine();
